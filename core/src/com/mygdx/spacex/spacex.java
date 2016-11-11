@@ -9,16 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class spacex extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	TextureRegion imgRegion;
+	
+	// Declare player.
 	Player player;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		// Set mem for player, call constructor.
 		player = new Player();
-		imgRegion = new TextureRegion(player.getImage());
 	}
 
 	@Override
@@ -29,13 +28,13 @@ public class spacex extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(imgRegion, player.getLocation().x, player.getLocation().y);
+		player.draw(batch);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		player.dispose();
 	}
 }
