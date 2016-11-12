@@ -12,23 +12,27 @@ public class spacex extends ApplicationAdapter {
 	
 	// Declare player.
 	Player player;
+	Background background;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		// Set mem for player, call constructor.
+		//Set mem for player, call constructor.
 		player = new Player();
+		background = new Background();
+		
 	}
 
 	@Override
 	public void render () {
 		
 		player.update();
-		
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+		background.draw(batch);
 		player.draw(batch);
+		
 		batch.end();
 	}
 	
@@ -36,5 +40,6 @@ public class spacex extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		player.dispose();
+		background.dispose();
 	}
 }

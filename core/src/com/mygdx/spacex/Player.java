@@ -74,9 +74,10 @@ public class Player {
 				location.y, 
 				image.getWidth(),
 				image.getHeight(),
-				scale, 
+				scale,
 				scale, 
 				angle);
+
 	}
 	
 	public void dispose () {
