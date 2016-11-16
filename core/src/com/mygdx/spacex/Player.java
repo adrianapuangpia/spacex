@@ -29,7 +29,7 @@ public class Player extends Sprite {
 	private Timer shotDelay;
 	
 	public Player (SpriteBatch batch) {
-		super(new Texture("player.png"));
+		super(new Texture("PlayerShip.png"));
 		this.batch = batch;
 		shotReady = true;
 		shotDelay = new Timer();

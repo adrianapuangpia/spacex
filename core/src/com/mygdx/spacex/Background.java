@@ -12,7 +12,7 @@ public class Background {
 	
 	public Background()
 	{
-		background = new Texture("twinkle.gif");
+		background = new Texture("newBackground.jpg");
 		imgRegion = new TextureRegion(background);
 	}
 	
