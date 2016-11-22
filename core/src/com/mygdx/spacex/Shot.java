@@ -25,10 +25,6 @@ public class Shot extends Sprite {
 	private void movement()
 	{
 		this.setY((this.getY() + speed));
-		//if (this.location.y >= 900)
-		//{
-			//dispose();
-		//}
 	}
 	public void dispose () {
 		getTexture().dispose();

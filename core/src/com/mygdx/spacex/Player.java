@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class Player extends Sprite {
+public class Player extends Entity {
 	
 	// Declare what kind of data this player class will use.
 	private float speed;
@@ -27,7 +27,7 @@ public class Player extends Sprite {
 	private ArrayList<Shot> shots = new ArrayList<Shot>();
 	private Boolean shotReady;
 	private Timer shotDelay;
-	
+
 	public Player (SpriteBatch batch) {
 		super(new Texture("PlayerShip.png"));
 		this.batch = batch;
@@ -55,17 +55,9 @@ public class Player extends Sprite {
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) isDown = true;
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) isSpace = true;
 		
-		// Now, what kind of directional movement are you doing?
-		// Mouse angle + forward backward
-		// left right = change angle, forward backward
-		// ? let just leave it simple up down left rigght for fnow
-		// ok, you will need to do the math later to calculate the texture angle
-		// this is the basis of a player class. theres more to write, but thats your part :]
-		// did this help? 
-		// This was absolutely great, thanlk you so much :) push to repo. how and where has the repo been created on github
 	}
-	
-	private void movement () {
+	@Override
+	public void movement () {
 		// if right and left are pressed, they cancel out.
 		if (isLeft) setX(getX() - speed);
 		if (isRight) setX(getX() + speed);
@@ -84,24 +76,7 @@ public class Player extends Sprite {
 		if (getY() + getHeight() > Gdx.graphics.getHeight()) {
 			setY(0);
 		}
-		/*
-		if (getX() <= -45)//location.x <=-45)
-		{
-			
-		}
-		if (getX() >= 850)//location.x >= 850)
-		{
-			setX(-45);
-		}
-		if (getY() <= -40)//location.y<=-40)
-		{
-			setY(450);
-		}
-		if (getY() >= 490)//location.y >= 490)
-		{
-			setY(-15);
-		}
-		*/
+
 		// If space was pressed this frame.
 		if (isSpace) {
 			// If shot is ready.
@@ -114,9 +89,11 @@ public class Player extends Sprite {
 				System.out.println("Disabled.");
 				
 				// Wait 1 second before allowing next shot.
-				shotDelay.scheduleTask(new Task() {
+				shotDelay.scheduleTask(new Task() 
+				{
 					@Override
-					public void run() {
+					public void run() 
+					{
 						shotReady = true;
 						System.out.println("Ready");
 					}
@@ -133,52 +110,14 @@ public class Player extends Sprite {
 		input();
 		movement();
 	}
-	
-	public void dispose () {
-		getTexture().dispose();
-	}
+
 	
 	public void draw () {
-		draw(batch);
+		draw(batch); 
 		for(int i = 0; i < shots.size(); i++){
 			shots.get(i).draw(batch);
+				
 		}
 	}
-	
-	/*
-	public int getWidth()
-	{
-		return image.getWidth();
-	}
-	
-	public int getHeight()
-	{
-		return image.getHeight();
-	}
-	
-	public Vector2 getLocation() {
-		return location;
-	}
-
-	public void setLocation(Vector2 location) {
-		this.location = location;
-	}
-
-	public Texture getImage() {
-		return image;
-	}
-
-	public void setImage(Texture image) {
-		this.image = image;
-	}
-
-	public float getScale() {
-		return scale;
-	}
-
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
-	*/
 	
 }

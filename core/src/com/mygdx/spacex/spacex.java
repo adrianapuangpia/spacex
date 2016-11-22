@@ -14,6 +14,7 @@ public class spacex extends ApplicationAdapter {
 	// Declare player.
 	Player player;
 	Background background;
+	Enemy asteroid;
 	
 	@Override
 	public void create () {
@@ -21,6 +22,7 @@ public class spacex extends ApplicationAdapter {
 		//Set mem for player and background, call constructor.
 		player = new Player(batch);
 		background = new Background();
+		asteroid = new Enemy(batch);
 		
 	}
 
@@ -28,22 +30,13 @@ public class spacex extends ApplicationAdapter {
 	public void render () {
 		
 		player.update();
+		asteroid.update();
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		background.draw(batch);
-		player.draw();
-	
-	
-		//if (Gdx.input.isKeyPressed(Keys.SPACE)) isSpace = true;
-		//else isSpace = false;
-		//if (isSpace) 
-		//{
-			//Shot newShot = new Shot(player);
-			//newShot.draw(batch);
-			//newShot.update();
-		//}
-		
+		player.draw(); 
+		asteroid.draw();
 		batch.end();
 	}	
 	
@@ -53,5 +46,6 @@ public class spacex extends ApplicationAdapter {
 		batch.dispose();
 		player.dispose();
 		background.dispose();
+		asteroid.dispose();
 	}
 }
