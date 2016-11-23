@@ -124,8 +124,8 @@ public class Player extends Entity {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		super.dispose();
-		setX(-100);
-		setY(-100);
+		setX(-100); //fix this
+		setY(-100); //fix this
 		alive = false;
 	}
 

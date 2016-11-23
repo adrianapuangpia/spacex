@@ -20,8 +20,10 @@ public class spacex extends ApplicationAdapter {
 	Player player;
 	Background background;
 	ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+	ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
 	Timer timer;
-	private float delay = 2f;
+	Timer enemyShootDelay;
+	private float delay = 1f;
 	
 	@Override
 	public void create () {
@@ -30,6 +32,7 @@ public class spacex extends ApplicationAdapter {
 		player = new Player(batch, asteroids);
 		background = new Background();
 		timer = new Timer();
+		enemyShootDelay = new Timer();
 		timer.scheduleTask(new Task() {
 			@Override
 			public void run() {
@@ -38,6 +41,18 @@ public class spacex extends ApplicationAdapter {
 			}
 		}, delay, delay);
 		timer.start();
+		
+		enemyShootDelay.scheduleTask(new Task() {
+			@Override
+			public void run()
+			{
+				ships.add(new EnemyShip(batch,player,asteroids));
+			}
+		},10,10);
+		enemyShootDelay.start();
+		
+		
+		
 	}
 
 	@Override
@@ -47,6 +62,9 @@ public class spacex extends ApplicationAdapter {
 		for(int i = 0; i < asteroids.size(); i++) {
 			asteroids.get(i).update();
 		}
+		for(int i = 0; i < ships.size(); i++) {
+			ships.get(i).update();
+		}
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -54,6 +72,9 @@ public class spacex extends ApplicationAdapter {
 		player.draw(); 
 		for(int i = 0; i < asteroids.size(); i++) {
 			asteroids.get(i).draw();
+		}
+		for(int i = 0; i < ships.size(); i++) {
+			ships.get(i).draw();
 		}
 		batch.end();
 	}	
