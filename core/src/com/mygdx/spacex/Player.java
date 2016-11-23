@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Timer;
@@ -21,14 +22,15 @@ public class Player extends Entity {
 	
 	// Declare what kind of data this player class will use.
 	private float speed;
-	boolean isLeft, isRight, isUp, isDown, isSpace;
+	boolean isLeft, isRight, isUp, isDown, isSpace, alive;
 	private SpriteBatch batch;
 	//private Queue shots = new LinkedList<Shot>();
 	private ArrayList<Shot> shots = new ArrayList<Shot>();
+	private ArrayList<Asteroid> asteroids;
 	private Boolean shotReady;
 	private Timer shotDelay;
 
-	public Player (SpriteBatch batch) {
+	public Player (SpriteBatch batch, ArrayList<Asteroid> asteroids) {
 		super(new Texture("PlayerShip.png"));
 		this.batch = batch;
 		shotReady = true;
@@ -37,27 +39,31 @@ public class Player extends Entity {
 		setY(0);
 		setRotation(0f);
 		speed = 20;
+		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+		alive = true;
+		this.asteroids = asteroids;
 	}
 	
 	private void input () {
-		
-		// Start everything in this frame is false.
-		isLeft = false;
-		isRight = false;
-		isUp = false;
-		isDown = false;
-		isSpace = false;
-		
-		// Only change if true this frame.
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) isLeft = true;
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) isRight = true;
-		if (Gdx.input.isKeyPressed(Keys.UP)) isUp = true;
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) isDown = true;
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) isSpace = true;
-		
+		if (alive) {
+			// Start everything in this frame is false.
+			isLeft = false;
+			isRight = false;
+			isUp = false;
+			isDown = false;
+			isSpace = false;
+			
+			// Only change if true this frame.
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) isLeft = true;
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)) isRight = true;
+			if (Gdx.input.isKeyPressed(Keys.UP)) isUp = true;
+			if (Gdx.input.isKeyPressed(Keys.DOWN)) isDown = true;
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) isSpace = true;
+		}
 	}
 	@Override
 	public void movement () {
+		if (!alive) return;
 		// if right and left are pressed, they cancel out.
 		if (isLeft) setX(getX() - speed);
 		if (isRight) setX(getX() + speed);
@@ -83,7 +89,7 @@ public class Player extends Entity {
 			if(shotReady) {
 				System.out.println("Fired");
 				// Add new shot to shots list, with given coord.
-				shots.add(new Shot(new Vector2(getX() + getWidth() / 2, getY() + getHeight())));
+				shots.add(new Shot(new Vector2(getX() + getWidth() / 2, getY() + getHeight()), asteroids));
 				// Set shot ready to false to prevent spam.
 				shotReady = false;
 				System.out.println("Disabled.");
@@ -101,22 +107,32 @@ public class Player extends Entity {
 				
 			}
 		}
-		for(int i = 0; i < shots.size(); i++){
-			shots.get(i).update();
-		}
+		bounds.setX(getX());
+		bounds.setY(getY());
+		System.out.println(bounds.getY());
 	}
 	
 	public void update () {
 		input();
 		movement();
+		for(int i = 0; i < shots.size(); i++){
+			shots.get(i).update();
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		super.dispose();
+		setX(-100);
+		setY(-100);
+		alive = false;
 	}
 
-	
 	public void draw () {
 		draw(batch); 
 		for(int i = 0; i < shots.size(); i++){
 			shots.get(i).draw(batch);
-				
 		}
 	}
 	
