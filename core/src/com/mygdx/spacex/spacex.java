@@ -22,6 +22,7 @@ public class spacex extends ApplicationAdapter {
 	ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
 	Timer timer;
+	Timer timer2;
 	Timer enemyShootDelay;
 	private float delay = 1f;
 	
@@ -32,6 +33,7 @@ public class spacex extends ApplicationAdapter {
 		player = new Player(batch, asteroids);
 		background = new Background();
 		timer = new Timer();
+		timer2 = new Timer();
 		enemyShootDelay = new Timer();
 		timer.scheduleTask(new Task() {
 			@Override
@@ -47,10 +49,10 @@ public class spacex extends ApplicationAdapter {
 			public void run()
 			{
 				ships.add(new EnemyShip(batch,player,asteroids));
+			
 			}
 		},10,10);
 		enemyShootDelay.start();
-		
 		
 		
 	}
@@ -75,6 +77,16 @@ public class spacex extends ApplicationAdapter {
 		}
 		for(int i = 0; i < ships.size(); i++) {
 			ships.get(i).draw();
+		}
+		if (ships.size() > 0)
+		{
+		timer2.scheduleTask(new Task() {
+			public void run()
+			{
+				ships.get(ships.size()-1).generateShot();
+			}
+		},1,1);
+		timer2.start();
 		}
 		batch.end();
 	}	

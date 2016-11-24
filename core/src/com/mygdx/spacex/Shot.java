@@ -14,6 +14,7 @@ public class Shot extends Sprite {
 	private float speed;
 	private Rectangle bounds;
 	private ArrayList<Asteroid> asteroids;
+	;
 	
 	public Shot(Vector2 start, ArrayList<Asteroid> asteroids)
 	{
@@ -24,6 +25,7 @@ public class Shot extends Sprite {
 		speed = 20;
 		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 		this.asteroids = asteroids;
+		
 	}
 	public void update()
 	{

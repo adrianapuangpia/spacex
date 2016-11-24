@@ -27,6 +27,7 @@ public class Player extends Entity {
 	//private Queue shots = new LinkedList<Shot>();
 	private ArrayList<Shot> shots = new ArrayList<Shot>();
 	private ArrayList<Asteroid> asteroids;
+
 	private Boolean shotReady;
 	private Timer shotDelay;
 

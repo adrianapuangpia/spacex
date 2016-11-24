@@ -19,8 +19,9 @@ public class EnemyShip extends Entity{
 	SpriteBatch batch;
 	boolean alive, shotReady;
 	Timer shotDelay;
-	int delay = 1;
+	int delay = 5;
 	ArrayList<Asteroid> asteroids;
+	
 	private ArrayList<Shot> shots = new ArrayList<Shot>();
 	Random rand = new Random();
 
@@ -33,7 +34,7 @@ public class EnemyShip extends Entity{
 		setX(rand.nextInt(Gdx.graphics.getWidth()) + 1);
 		setY(Gdx.graphics.getHeight());
 		setRotation(0f);
-		speed = 10;
+		speed = 5;
 		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 		alive = true;
 		this.asteroids = asteroids;
@@ -44,14 +45,18 @@ public class EnemyShip extends Entity{
 	{
 		super.movement();
 		translateY(-speed);
+		if (player.getY() > this.getY())
+			translateY(speed);
 		
 		Vector2 dir = new Vector2(player.getX()-this.getX(),player.getY()-this.getY());
 		double hyp = Math.sqrt(dir.x*dir.x +dir.y*dir.y);
 		dir.x /= hyp;
 		dir.y /= hyp;
 		
-		setX(dir.x*speed);
-		setY(dir.y*speed);
+		float xval = this.getX();
+		float yval = this.getY();
+		setX(dir.x*speed + xval);
+		setY(dir.y*speed + yval);
 		
 		bounds.setX(getX());
 		bounds.setY(getY());
