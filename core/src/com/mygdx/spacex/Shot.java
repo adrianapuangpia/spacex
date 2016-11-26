@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GeometryUtils;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +18,7 @@ public class Shot extends DynamicEntity {
 	// 0: player shot, 1: enemy shot, .. etc.
 	protected int type;
 	
-	public Shot(Vector2 start, Vector2 target, int type, SpriteBatch batch, ArrayList<Entity> world)
+	public Shot(Vector2 start, float rotation, int type, SpriteBatch batch, ArrayList<Entity> world)
 	{
 		super(new Texture("laser.jpg"), start, batch, world);
 		horizontalSpeed = 10f;
@@ -25,9 +26,8 @@ public class Shot extends DynamicEntity {
 		
 		// Set the type of shot.
 		this.type = type;
-
-		velocity = target;
-		System.out.println(velocity.toString());
+		
+		setVelocityToAngle(rotation);
 		
 		// might change this later.
 		setScale(10f, 20f);

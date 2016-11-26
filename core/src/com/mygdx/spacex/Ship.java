@@ -82,20 +82,9 @@ public abstract class Ship extends DynamicEntity {
 			// Get location of ship, and create a spawn point for shot.
 			Vector2 start = new Vector2(getX(), getY());
 			
-			// dirty fix for now, while i figure this out? ok?yea of course
-			// Pass in start point, velocity of the shot, and world it belongs to.
-			if (getClass() == Player.class) {
-				shots.add(new Shot(start, new Vector2(0, 1), shipType, batch, world));
-			}
-			if (getClass() == EnemyShip.class) {
-				Vector2 target = new Vector2();
-				target.x = getX() - world.get(0).getX();
-				target.y = getY() - world.get(0).getY();
-				shots.add(new Shot(start, target, shipType, batch, world));
-			}
-			// ok, figure this out tomorrow, ill research it lool
-			//math +poop there's some fun to it lmaao ok im gonna call it talk to u tomorrow
+			float rotation = getRotation() + 90f;
 			
+			shots.add(new Shot(start, rotation, shipType, batch, world));
 		
 			// Set shot ready to false to prevent spam.
 			shotReady = false;
@@ -111,7 +100,7 @@ public abstract class Ship extends DynamicEntity {
 			
 		}
 
-	}
+	} 
 	
 	@Override
 	protected void dispose() {

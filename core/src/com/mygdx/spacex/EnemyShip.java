@@ -12,6 +12,8 @@ public class EnemyShip extends Ship {
 		horizontalSpeed = 2f;
 		verticalSpeed = 2f;
 		shotDelay = 1f;
+		// Flip the sprite.
+		rotate(180f);
 	}
 	
 	// AI logic to set movement data, almost like Player's input.

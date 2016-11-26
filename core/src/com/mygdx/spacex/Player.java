@@ -35,7 +35,7 @@ public class Player extends Ship {
 				velocity.y = 1;
 			if (Gdx.input.isKeyPressed(Keys.DOWN))
 				velocity.y = -1;
-
+			
 			// Negate.
 			if (Gdx.input.isKeyPressed(Keys.LEFT) && Gdx.input.isKeyPressed(Keys.RIGHT))
 				velocity.x = 0;

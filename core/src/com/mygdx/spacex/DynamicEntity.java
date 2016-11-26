@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class DynamicEntity extends Entity {
@@ -56,6 +57,13 @@ public abstract class DynamicEntity extends Entity {
 	protected void draw() {
 		// TODO Auto-generated method stub
 		super.draw();
+	}
+	
+	protected void setVelocityToAngle (float angle) {
+		// Set velocity towards an angle.
+		velocity.x = MathUtils.cos(angle * MathUtils.degreesToRadians);
+		velocity.y = MathUtils.sin(angle * MathUtils.degreesToRadians);
+		velocity.nor();
 	}
 	
 	
