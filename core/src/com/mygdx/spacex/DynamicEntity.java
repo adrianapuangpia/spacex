@@ -49,14 +49,11 @@ public abstract class DynamicEntity extends Entity {
 	
 	@Override
 	protected void update () {
-		movement();
+		// Run movement update if alive.
+		if (alive)
+			movement();
+		
 		super.update();
-	}
-
-	@Override
-	protected void draw() {
-		// TODO Auto-generated method stub
-		super.draw();
 	}
 	
 	protected void setVelocityToAngle (float angle) {

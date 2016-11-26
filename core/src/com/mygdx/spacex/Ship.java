@@ -14,11 +14,11 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public abstract class Ship extends DynamicEntity {
 	
+	// The list of shots.
+	protected ArrayList<Shot> shots;
+	
 	// Shot type
 	protected int shipType;
-	
-	// ArrayList of shots made by this ship.
-	protected ArrayList<Shot> shots;
 	
 	// The timer for shots.
 	protected Timer shotTimer;
@@ -51,29 +51,6 @@ public abstract class Ship extends DynamicEntity {
 
 	}
 	
-	@Override
-	protected void update () {
-		// DynamicEntity.update() processes movement.
-		super.update();
-		
-		// Process movement for each shot made by this ship.
-		shots.forEach(shot -> {
-			shot.update();
-		});
-	}
-	
-	@Override
-	protected void draw () {
-		// Draw self.
-		super.draw();
-		// Draw each the shots created by this ship.
-		shots.forEach(shot->{
-			if (shot.alive) {
-				shot.draw();
-			}
-		});
-	}
-	
 	protected void fire () {
 		
 		// If shot is ready.
@@ -102,18 +79,35 @@ public abstract class Ship extends DynamicEntity {
 
 	} 
 	
+	// Process update for itself and its shots.
+	@Override
+	protected void update() {
+		// TODO Auto-generated method stub
+		super.update();
+		shots.forEach(shot->{
+			shot.update();
+		});
+	}
+	
+	// Draw itself and its shots.
+	@Override
+	protected void draw() {
+		// TODO Auto-generated method stub
+		super.draw();
+		shots.forEach(shot->{
+			shot.draw();
+		});
+	}
+
+	// Set alive to false. Dispose of itself. Does NOT clear or dipose shots.
 	@Override
 	protected void dispose() {
-		
-		// Dispose of shots created.
-		shots.forEach(shot -> {
-			// Run dispose on each shot -> DynamicEntity -> Entity.dispose -> texture dispose.
-			shot.dispose();
-		});
-		// Clear list.
-		shots.clear();
 		// TODO Auto-generated method stub
-		// -> DynamicEntity -> Entity.dipose -> texture Dispose
+		
+		// Set alive to false.
+		alive = false;
+		
+		// Dispose self.
 		super.dispose();
 	}
 }

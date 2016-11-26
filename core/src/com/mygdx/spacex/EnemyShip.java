@@ -1,6 +1,7 @@
 package com.mygdx.spacex;
 
 import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -30,22 +31,26 @@ public class EnemyShip extends Ship {
 		fire();
 	}
 	
+	// If collides with player, run this.dispose, and run player's dispose.
 	private void collision () {
 		if (bounds.overlaps(world.get(0).bounds)) {
-			alive = false;
-			world.get(0).dispose();
 			dispose();
+			world.get(0).dispose();
 		}
 	}
 	
 	@Override
 	protected void update () {
 		// Process ai logic.
-		ai();
+		if (alive)
+			ai();
+		
 		// Run ship update.
 		super.update();
-		// Run collision update.
-		collision();
+		
+		// Run collision update if alive.
+		if (alive)
+			collision();
 	}
 
 }

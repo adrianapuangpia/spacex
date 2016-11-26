@@ -5,9 +5,9 @@
 package com.mygdx.spacex;
 
 import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -22,30 +22,28 @@ public class Player extends Ship {
 		verticalSpeed = 20f;
 	}
 	
+	// Process input.
 	private void input () {
-		// If alive, take input.
-		if (alive) {
+		velocity.x = 0;
+		velocity.y = 0;
+		if (Gdx.input.isKeyPressed(Keys.LEFT))
+			velocity.x = -1;
+		if (Gdx.input.isKeyPressed(Keys.RIGHT))
+			velocity.x = 1;
+		if (Gdx.input.isKeyPressed(Keys.UP))
+			velocity.y = 1;
+		if (Gdx.input.isKeyPressed(Keys.DOWN))
+			velocity.y = -1;
+		
+		// Negate.
+		if (Gdx.input.isKeyPressed(Keys.LEFT) && Gdx.input.isKeyPressed(Keys.RIGHT))
 			velocity.x = 0;
+		if (Gdx.input.isKeyPressed(Keys.UP) && Gdx.input.isKeyPressed(Keys.DOWN))
 			velocity.y = 0;
-			if (Gdx.input.isKeyPressed(Keys.LEFT))
-				velocity.x = -1;
-			if (Gdx.input.isKeyPressed(Keys.RIGHT))
-				velocity.x = 1;
-			if (Gdx.input.isKeyPressed(Keys.UP))
-				velocity.y = 1;
-			if (Gdx.input.isKeyPressed(Keys.DOWN))
-				velocity.y = -1;
-			
-			// Negate.
-			if (Gdx.input.isKeyPressed(Keys.LEFT) && Gdx.input.isKeyPressed(Keys.RIGHT))
-				velocity.x = 0;
-			if (Gdx.input.isKeyPressed(Keys.UP) && Gdx.input.isKeyPressed(Keys.DOWN))
-				velocity.y = 0;
-			
-			
-			if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-				fire();
-			}
+		
+		
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			fire();
 		}
 	}
 	
@@ -66,19 +64,15 @@ public class Player extends Ship {
 	}
 	
 	public void update () {
-		// Process own input.
-		input();
+		// Process own input if alive.
+		if (alive)
+			input();
+		
 		// Ship.update
 		super.update();
-		// Run own collision update.
-		collision();
+		
+		if (alive)
+		// Run own collision update if alive.
+			collision();
 	}
-	
-	@Override
-	public void dispose() {
-		alive = false;
-		// TODO Auto-generated method stub
-		// Wil run ship's dispose.
-		super.dispose();
-	}	
 }

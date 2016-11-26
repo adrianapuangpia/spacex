@@ -5,10 +5,9 @@ package com.mygdx.spacex;
  * Update from the parent class that makes it.
  */
 import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.GeometryUtils;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
@@ -34,11 +33,22 @@ public class Shot extends DynamicEntity {
 		
 		// this kinda bothers me, we'll refactor it later. its already being set in Entity.
 		// but i know you need it because you scale it. we'll figure this out later.
-		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+		bounds.set(getX(), getY(), getWidth(), getHeight());
 	}
 	
+	
+	// A shot will only update if it's alive.
+	@Override
+	protected void update() {
+		if (alive) {
+			// TODO Auto-generated method stub
+			super.update();
+			collision();
+		}
+	}
+
 	// General collision method.
-	protected void collision () {
+	private void collision () {
 		switch(type) {
 		case 0:
 			playerShotCollision();
@@ -73,12 +83,5 @@ public class Shot extends DynamicEntity {
 			dispose();
 		}
 	}
-
-	@Override
-	protected void draw() {
-		// TODO Auto-generated method stub
-		super.draw();
-	}
-	
 	
 }

@@ -12,7 +12,6 @@
 package com.mygdx.spacex;
 
 import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,6 +34,7 @@ public abstract class Entity extends Sprite {
 		super(texture);
 		this.world = world;
 		this.batch = batch;
+		
 		setPosition(start.x, start.y);
 		bounds = new Rectangle(start.x, start.y, texture.getWidth(), texture.getHeight());
 		alive = true;
@@ -48,6 +48,7 @@ public abstract class Entity extends Sprite {
 	protected void update () {}
 	
 	protected void draw () {
-		draw(batch);
+		if (alive)
+			draw(batch);
 	}
 }

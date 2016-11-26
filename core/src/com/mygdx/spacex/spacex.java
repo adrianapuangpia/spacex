@@ -1,6 +1,7 @@
 package com.mygdx.spacex;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -35,7 +36,6 @@ public class spacex extends ApplicationAdapter {
 		
 		// Spawn player.
 		player = new Player(new Vector2(0f, 0f), batch, world);
-		// Player is now element 0;
 		world.add(player);
 		
 		asteroidsOn = false;
@@ -80,7 +80,6 @@ public class spacex extends ApplicationAdapter {
 				}
 			}, 0f, enemySpawnDelay);
 		}
-		
 		
 		asteroidSpawnTimer.start();
 		enemySpawnTimer.start();
