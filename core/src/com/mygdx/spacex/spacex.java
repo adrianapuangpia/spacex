@@ -37,7 +37,7 @@ public class spacex extends ApplicationAdapter {
 		player = new Player(new Vector2(0f, 0f), batch, world);
 		world.add(player);
 		
-		asteroidsOn = false;
+		asteroidsOn = true;
 		enemiesOn = true;
 		
 		setTimers();

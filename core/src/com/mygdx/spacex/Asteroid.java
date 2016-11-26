@@ -18,12 +18,17 @@ public class Asteroid extends DynamicEntity {
 		super(new Texture("asteroid1.png"), start, batch, world);
 		random = new Random();
 		setRandomSpin();
+		velocity.x = 0;
+		velocity.y = -1;
+		horizontalSpeed = 0f;
+		verticalSpeed = 5f;
 	}
 	
 	public void update () {
 		super.movement();
 		rotate(rotationSpeed);
-		collision();
+		
+		if (alive) collision();
 	}
 	
 	private void collision () {
