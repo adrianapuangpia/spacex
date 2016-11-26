@@ -40,14 +40,15 @@ public class Shot extends DynamicEntity {
 	// A shot will only update if it's alive.
 	@Override
 	protected void update() {
-		if (alive) {
-			// TODO Auto-generated method stub
-			super.update();
-			collision();
-		}
+		// TODO Auto-generated method stub
+		// DynamicEntity.update()
+		super.update();
+		
+		// Run collision update if alive.
+		if (alive) collision();
 	}
 
-	// General collision method.
+	// Switch collision method.
 	private void collision () {
 		switch(type) {
 		case 0:
@@ -62,25 +63,27 @@ public class Shot extends DynamicEntity {
 	private void playerShotCollision () {
 		// Check each world object.
 		world.forEach(e-> {
+			
 			// Check if bound.
 			boolean overlaps = bounds.overlaps(e.bounds);
+			
 			// Check if any of the targets.
 			boolean isEnemy = e.getClass() == EnemyShip.class;
 			boolean isAsteroid = e.getClass() == Asteroid.class;
+			
 			// If it collides with this shot. (This first if, will filter out a lot of objects)
 			if (overlaps && (isEnemy || isAsteroid )) {
-				alive = false;
-				e.dispose();
 				dispose();
+				e.dispose();
 			}
+			
 		});
 	}
 	
 	private void enemyShotCollision () {
 		if (bounds.overlaps(world.get(0).bounds)) {
-			alive = false;
-			world.get(0).dispose();
 			dispose();
+			world.get(0).dispose();
 		}
 	}
 	

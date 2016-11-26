@@ -41,16 +41,14 @@ public class EnemyShip extends Ship {
 	
 	@Override
 	protected void update () {
-		// Process ai logic.
-		if (alive)
-			ai();
+		// Process ai logic if alive.
+		if (alive) ai();
 		
 		// Run ship update.
 		super.update();
 		
 		// Run collision update if alive.
-		if (alive)
-			collision();
+		if (alive) collision();
 	}
 
 }

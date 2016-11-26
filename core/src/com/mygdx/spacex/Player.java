@@ -63,16 +63,15 @@ public class Player extends Ship {
 		}
 	}
 	
-	public void update () {
+	@Override
+	protected void update () {
 		// Process own input if alive.
-		if (alive)
-			input();
+		if (alive) input();
 		
 		// Ship.update
 		super.update();
-		
-		if (alive)
-		// Run own collision update if alive.
-			collision();
+
+		// Run own collision update if alive.		
+		if (alive) collision();
 	}
 }

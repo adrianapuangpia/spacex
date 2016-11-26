@@ -42,6 +42,7 @@ public abstract class Entity extends Sprite {
 	
 	// Can be used outside of class.
 	protected void dispose () {
+		alive = false;
 		getTexture().dispose();
 	}
 	

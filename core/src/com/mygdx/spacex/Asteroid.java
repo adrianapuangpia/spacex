@@ -31,8 +31,8 @@ public class Asteroid extends DynamicEntity {
 			boolean overlap = bounds.overlaps(entity.bounds);
 			boolean isPlayer = entity.getClass() == Player.class;
 			if(overlap && isPlayer) {
-				world.get(0).dispose();
 				dispose();
+				world.get(0).dispose();
 			}
 		});
 	}
