@@ -57,7 +57,7 @@ public abstract class Ship extends DynamicEntity {
 		if(shotReady) {
 			
 			// Get location of ship, and create a spawn point for shot.
-			Vector2 start = new Vector2(getX(), getY());
+			Vector2 start = new Vector2(getX() + getWidth() / 2, getY() + getHeight() / 2);
 			
 			float rotation = getRotation() + 90f;
 			
