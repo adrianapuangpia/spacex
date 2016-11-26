@@ -1,49 +1,84 @@
 package com.mygdx.spacex;
-
+/**
+ * Has a spawn point, and velocity (direction).
+ * Usually not made on its own.
+ * Update from the parent class that makes it.
+ */
 import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.GeometryUtils;
 import com.badlogic.gdx.math.Rectangle;
+
 import com.badlogic.gdx.math.Vector2;
 
-public class Shot extends Sprite {
+public class Shot extends DynamicEntity {
 	
-	private float speed;
-	private Rectangle bounds;
-	private ArrayList<Asteroid> asteroids;
-	;
+	// 0: player shot, 1: enemy shot, .. etc.
+	protected int type;
 	
-	public Shot(Vector2 start, ArrayList<Asteroid> asteroids)
+	public Shot(Vector2 start, Vector2 target, int type, SpriteBatch batch, ArrayList<Entity> world)
 	{
-		super(new Texture("laser.jpg"));
-		setX(start.x);
-		setY(start.y);
-		setScale(10f, 20f);
-		speed = 20;
-		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-		this.asteroids = asteroids;
+		super(new Texture("laser.jpg"), start, batch, world);
+		horizontalSpeed = 10f;
+		verticalSpeed = 10f;
 		
+		// Set the type of shot.
+		this.type = type;
+
+		velocity = target;
+		System.out.println(velocity.toString());
+		
+		// might change this later.
+		setScale(10f, 20f);
+		
+		// this kinda bothers me, we'll refactor it later. its already being set in Entity.
+		// but i know you need it because you scale it. we'll figure this out later.
+		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
-	public void update()
-	{
-		movement();
-	}
-	private void movement()
-	{
-		translateY(speed);
-		bounds.setX(getX());
-		bounds.setY(getY());
-		for(int i =0; i<asteroids.size(); i++)
-		if (bounds.overlaps(asteroids.get(i).bounds)) {
-			dispose();
-			asteroids.get(i).dispose();
-			asteroids.remove(i);
+	
+	// General collision method.
+	protected void collision () {
+		switch(type) {
+		case 0:
+			playerShotCollision();
+			break;
+		case 1:
+			enemyShotCollision();
+			break;
 		}
 	}
-	public void dispose () {
-		getTexture().dispose();
+	
+	private void playerShotCollision () {
+		// Check each world object.
+		world.forEach(e-> {
+			// Check if bound.
+			boolean overlaps = bounds.overlaps(e.bounds);
+			// Check if any of the targets.
+			boolean isEnemy = e.getClass() == EnemyShip.class;
+			boolean isAsteroid = e.getClass() == Asteroid.class;
+			// If it collides with this shot. (This first if, will filter out a lot of objects)
+			if (overlaps && (isEnemy || isAsteroid )) {
+				alive = false;
+				e.dispose();
+				dispose();
+			}
+		});
 	}
+	
+	private void enemyShotCollision () {
+		if (bounds.overlaps(world.get(0).bounds)) {
+			alive = false;
+			world.get(0).dispose();
+			dispose();
+		}
+	}
+
+	@Override
+	protected void draw() {
+		// TODO Auto-generated method stub
+		super.draw();
+	}
+	
+	
 }

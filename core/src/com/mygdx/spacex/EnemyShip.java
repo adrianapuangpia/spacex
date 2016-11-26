@@ -1,101 +1,49 @@
 package com.mygdx.spacex;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.*;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
-public class EnemyShip extends Entity{
-	Player player;
-	SpriteBatch batch;
-	boolean alive, shotReady;
-	Timer shotDelay;
-	int delay = 5;
-	ArrayList<Asteroid> asteroids;
-	
-	private ArrayList<Shot> shots = new ArrayList<Shot>();
-	Random rand = new Random();
+public class EnemyShip extends Ship {
 
-	public EnemyShip(SpriteBatch batch, Player player, ArrayList<Asteroid> asteroids) {
-		super(new Texture("enemy_spaceship.png"));
-		this.batch = batch;
-		this.player = player;
-		shotReady = true;
-		shotDelay = new Timer();
-		setX(rand.nextInt(Gdx.graphics.getWidth()) + 1);
-		setY(Gdx.graphics.getHeight());
-		setRotation(0f);
-		speed = 5;
-		bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-		alive = true;
-		this.asteroids = asteroids;
+	public EnemyShip(Vector2 start, SpriteBatch batch, ArrayList<Entity> world) {
+		super(new Texture("enemy_spaceship.png"), start, batch, world);
+		horizontalSpeed = 2f;
+		verticalSpeed = 2f;
+		shotDelay = 1f;
 	}
 	
-	@Override
-	protected void movement()
-	{
-		super.movement();
-		translateY(-speed);
-		if (player.getY() > this.getY())
-			translateY(speed);
-		
-		Vector2 dir = new Vector2(player.getX()-this.getX(),player.getY()-this.getY());
-		double hyp = Math.sqrt(dir.x*dir.x +dir.y*dir.y);
-		dir.x /= hyp;
-		dir.y /= hyp;
-		
-		float xval = this.getX();
-		float yval = this.getY();
-		setX(dir.x*speed + xval);
-		setY(dir.y*speed + yval);
-		
-		bounds.setX(getX());
-		bounds.setY(getY());
-		if (bounds.overlaps(player.bounds)) {
+	// AI logic to set movement data, almost like Player's input.
+	// This basically follows the player right here.
+	private void ai () {
+		if (world.get(0).getY() > getY())
+			velocity.y = 1;
+		if (world.get(0).getY() < getY())
+			velocity.y = -1;
+		if (world.get(0).getX() > getX())
+			velocity.x = 1;
+		if (world.get(0).getX() < getX()) 
+			velocity.x = -1;
+		fire();
+	}
+	
+	private void collision () {
+		if (bounds.overlaps(world.get(0).bounds)) {
+			alive = false;
+			world.get(0).dispose();
 			dispose();
-			player.dispose();
 		}
-		
-	}
-	protected void generateShot()
-	{
-		shotDelay = new Timer();
-		shotDelay.scheduleTask(new Task() {
-			@Override
-			public void run() {
-				shots.add(new Shot(new Vector2(getX() + getWidth() / 2, getY() + getHeight()),asteroids));
-			}
-		}, delay, delay);
-		shotDelay.start();
 	}
 	
-	public void update()
-	{
-		movement();
-	}
 	@Override
-	public void dispose() {
-		super.dispose();
-		setX(-100); //fix this
-		setY(-100); //fix this
-		alive = false;
+	protected void update () {
+		// Process ai logic.
+		ai();
+		// Run ship update.
+		super.update();
+		// Run collision update.
+		collision();
 	}
-
-	public void draw () {
-		draw(batch); 
-		for(int i = 0; i < shots.size(); i++){
-			shots.get(i).draw(batch);
-		}
-	}
-
 
 }
