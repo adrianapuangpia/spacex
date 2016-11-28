@@ -12,6 +12,7 @@ package com.mygdx.spacex;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,6 +32,7 @@ public abstract class Entity extends Sprite {
 	// State of Entity and lives.
 	protected Boolean alive;
 	protected int lives;
+	protected int maxHealth;
 	protected int health;
 	
 	// How much damage this entity would apply if it collides.
@@ -50,7 +52,8 @@ public abstract class Entity extends Sprite {
 		// Default lives to 1 and hp to 1. Override in sub classes..
 		alive = true;
 		lives = 1;
-		health = 1;
+		maxHealth = 1;
+		health = maxHealth;
 		
 		// Default collision damage to 1.
 		collisionDamage = 1;
@@ -81,7 +84,6 @@ public abstract class Entity extends Sprite {
 	}
 	
 	protected void damage (int d) {
-		System.out.println(toString() + "| health: " + health + ", damagedBy: " + d );
 		// Decrement health by damage.
 		health -= d;
 		// If health reaches 0 or less, kill it.
@@ -91,7 +93,6 @@ public abstract class Entity extends Sprite {
 	protected void kill () {
 		// If entity is alive and has lives.
 		if (alive && lives > 0) {
-			System.out.println(toString() + ": I died.");
 			lives -= 1;
 			alive = false;
 			
@@ -116,6 +117,7 @@ public abstract class Entity extends Sprite {
 				@Override
 				public void run() {
 					alive = true;
+					health = maxHealth;
 					setPosition(respawnVector.x, respawnVector.y);
 				}
 			}, respawnDelay);

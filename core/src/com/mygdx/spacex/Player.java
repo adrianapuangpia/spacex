@@ -19,9 +19,11 @@ public class Player extends Ship {
 		super(new Texture("PlayerShip.png"), start, batch, world);
 		
 		// Override default speeds.
-		horizontalSpeed = 20f;
-		verticalSpeed = 20f;
-		health = 3;
+		horizontalSpeed = 10f;
+		verticalSpeed = 10f;
+		maxHealth = 2;
+		health = maxHealth;
+		lives = 3;
 	}
 	
 	// Process input.

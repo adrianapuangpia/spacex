@@ -6,6 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -15,6 +16,8 @@ public class spacex extends ApplicationAdapter {
 	SpriteBatch batch;
 	
 	Player player;
+	protected BitmapFont playerHealthText;
+	
 	Background background;
 	
 	ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
@@ -22,15 +25,12 @@ public class spacex extends ApplicationAdapter {
 	
 	Random random;
 	
-	// yeah, you would instance it in spacex
-	// ill brb in a bit yeah let me know through twitter? i yeah ok thx!!!!!!i brb tooo
-	
 	private boolean asteroidsOn, enemiesOn, BossOn;
 	private Timer asteroidSpawnTimer, enemySpawnTimer, bossSpawnTimer;
 	private float asteroidSpawnDelay, enemySpawnDelay, bossSpawnDelay;
 	Sound backgroundSong;
 	Sound bossFightSong;
-	// Basically anything that inherited from Entity, can be put in here.
+	// Basically anything that inherited from Entity will be held here
 	ArrayList<Entity> world;
 	
 	@Override
@@ -43,6 +43,9 @@ public class spacex extends ApplicationAdapter {
 		// Spawn player.
 		player = new Player(new Vector2(0f, 0f), batch, world);
 		world.add(player);
+		
+		//to display health
+		playerHealthText = new BitmapFont();
 		
 		asteroidsOn = true;
 		enemiesOn = true;
@@ -70,7 +73,6 @@ public class spacex extends ApplicationAdapter {
 			asteroidSpawnTimer.scheduleTask(new Task() {
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					Asteroid asteroid = new Asteroid(randomTop(), batch, world);
 					asteroids.add(asteroid);
 					world.add(asteroid);
@@ -101,7 +103,7 @@ public class spacex extends ApplicationAdapter {
 					backgroundSong.stop();
 					bossFightSong.play(1.0f);
 				}
-			}, 10f, bossSpawnDelay);
+			}, 30f, bossSpawnDelay);
 		}
 		
 		asteroidSpawnTimer.start();
@@ -129,6 +131,12 @@ public class spacex extends ApplicationAdapter {
 		world.forEach(e->{
 			e.draw();
 		});
+		
+		// Render some UI.
+		float health = world.get(0).health;
+		float maxHealth = world.get(0).maxHealth;
+		String healthTemp = health + "/" + maxHealth; 
+		playerHealthText.draw(batch, healthTemp, 10f, Gdx.graphics.getHeight() - 10f);
 		
 		batch.end();
 	}

@@ -18,8 +18,8 @@ public class Boss extends EnemyShip {
 		super(start, batch, world);
 		if (randomTexture == 1)
 		{
-			setTexture(new Texture("Boss1.png"));
-			setScale(4f,2f);
+			setTexture(new Texture("boss.png"));
+			setScale(2f,2f);
 		}
 		else if (randomTexture == 2)
 		{
@@ -27,8 +27,8 @@ public class Boss extends EnemyShip {
 			setScale(2f, 2f);
 		}
 		shotDelay = 1f;
-		horizontalSpeed = 3f;
-		verticalSpeed = 3f;
+		horizontalSpeed = 1f;
+		verticalSpeed = 1f;
 		lives = 1;
 		respawnVector = start;
 		health = 5;

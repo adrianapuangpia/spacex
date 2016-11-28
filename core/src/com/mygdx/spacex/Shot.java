@@ -34,8 +34,7 @@ public class Shot extends DynamicEntity {
 		// might change this later.
 		setScale(10f, 20f);
 		
-		// this kinda bothers me, we'll refactor it later. its already being set in Entity.
-		// but i know you need it because you scale it. we'll figure this out later.
+		//needed because of the scaling
 		bounds.set(getX(), getY(), getWidth(), getHeight());
 	}
 	
@@ -43,7 +42,6 @@ public class Shot extends DynamicEntity {
 	// A shot will only update if it's alive.
 	@Override
 	protected void update() {
-		// TODO Auto-generated method stub
 		// DynamicEntity.update()
 		super.update();
 		
@@ -77,10 +75,10 @@ public class Shot extends DynamicEntity {
 			
 			// If it collides with this shot. (This first if, will filter out a lot of objects)
 			if (overlaps && (isEnemy || isAsteroid || isBoss )) {
+				System.out.println(e.toString() + " is taking damage.");
 				kill();
 				e.damage(collisionDamage);
 			}
-			
 		});
 	}
 	

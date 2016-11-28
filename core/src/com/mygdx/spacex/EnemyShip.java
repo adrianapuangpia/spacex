@@ -16,7 +16,6 @@ public class EnemyShip extends Ship {
 		rotate(180f);
 		shipType = 1;
 	}
-	// hold on brb
 	// AI logic to set movement data, almost like Player's input.
 	// This basically follows the player right here, if the player is alive.
 	protected void ai () {

@@ -47,6 +47,9 @@ public abstract class Ship extends DynamicEntity {
 		shipType = 0;
 		
 		explosionSound = Gdx.audio.newSound(Gdx.files.local("Explosion_03.mp3"));
+		
+		// Override default respawn.
+		respawnVector.set(Gdx.graphics.getWidth() / 2, 0);
 
 	}
 	
