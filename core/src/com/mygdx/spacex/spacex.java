@@ -28,13 +28,15 @@ public class spacex extends ApplicationAdapter {
 	private boolean asteroidsOn, enemiesOn, BossOn;
 	private Timer asteroidSpawnTimer, enemySpawnTimer, bossSpawnTimer;
 	private float asteroidSpawnDelay, enemySpawnDelay, bossSpawnDelay;
-	
+	Sound backgroundSong;
+	Sound bossFightSong;
 	// Basically anything that inherited from Entity, can be put in here.
 	ArrayList<Entity> world;
 	
 	@Override
 	public void create () {
-		Sound backgroundSong = Gdx.audio.newSound(Gdx.files.local("VGM_01.mp3"));
+		backgroundSong = Gdx.audio.newSound(Gdx.files.local("VGM_01.mp3"));
+		bossFightSong = Gdx.audio.newSound(Gdx.files.local("Boss_VGM.mp3"));
 		world = new ArrayList<Entity>();
 		batch = new SpriteBatch();
 		backgroundSong.play(1.0f);
@@ -42,8 +44,8 @@ public class spacex extends ApplicationAdapter {
 		player = new Player(new Vector2(0f, 0f), batch, world);
 		world.add(player);
 		
-		asteroidsOn = false;
-		enemiesOn = false;
+		asteroidsOn = true;
+		enemiesOn = true;
 		BossOn = true;
 		
 		setTimers();
@@ -62,7 +64,7 @@ public class spacex extends ApplicationAdapter {
 		bossSpawnTimer = new Timer();
 		asteroidSpawnDelay = 5f;
 		enemySpawnDelay = 10f;
-		bossSpawnDelay = 15f;
+		bossSpawnDelay = 100f;
 		
 		if (asteroidsOn) { 
 			asteroidSpawnTimer.scheduleTask(new Task() {
@@ -95,8 +97,11 @@ public class spacex extends ApplicationAdapter {
 				{
 					Boss boss = new Boss(randomTop(), batch, world);
 					world.add(boss);
+					enemiesOn = false;
+					backgroundSong.stop();
+					bossFightSong.play(1.0f);
 				}
-			}, 0f, bossSpawnDelay);
+			}, 10f, bossSpawnDelay);
 		}
 		
 		asteroidSpawnTimer.start();

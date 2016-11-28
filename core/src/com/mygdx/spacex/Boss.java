@@ -27,8 +27,8 @@ public class Boss extends EnemyShip {
 			setScale(2f, 2f);
 		}
 		shotDelay = 1f;
-		horizontalSpeed = 4f;
-		verticalSpeed = 4f;
+		horizontalSpeed = 3f;
+		verticalSpeed = 3f;
 		lives = 1;
 		respawnVector = start;
 		health = 5;

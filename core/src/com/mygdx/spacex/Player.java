@@ -21,6 +21,7 @@ public class Player extends Ship {
 		// Override default speeds.
 		horizontalSpeed = 20f;
 		verticalSpeed = 20f;
+		health = 3;
 	}
 	
 	// Process input.

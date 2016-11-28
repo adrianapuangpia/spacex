@@ -22,6 +22,7 @@ public class Shot extends DynamicEntity {
 	public Shot(Vector2 start, float rotation, int type, SpriteBatch batch, ArrayList<Entity> world)
 	{
 		super(new Texture("laser.jpg"), start, batch, world);
+		sound.play(1.0f);
 		horizontalSpeed = 10f;
 		verticalSpeed = 10f;
 		
