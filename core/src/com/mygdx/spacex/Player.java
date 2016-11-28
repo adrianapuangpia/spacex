@@ -8,12 +8,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Ship {
-
+	
 	public Player (Vector2 start, SpriteBatch batch, ArrayList<Entity> world) {
 		super(new Texture("PlayerShip.png"), start, batch, world);
 		
@@ -73,5 +74,12 @@ public class Player extends Ship {
 
 		// Run own collision update if alive.		
 		if (alive) collision();
+	}
+	
+	@Override
+	protected void dispose()
+	{
+		//sound.play(1.0f);
+		super.dispose();
 	}
 }

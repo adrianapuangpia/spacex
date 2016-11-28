@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -21,24 +22,29 @@ public class spacex extends ApplicationAdapter {
 	
 	Random random;
 	
-	private boolean asteroidsOn, enemiesOn;
-	private Timer asteroidSpawnTimer, enemySpawnTimer;
-	private float asteroidSpawnDelay, enemySpawnDelay;
+	// yeah, you would instance it in spacex
+	// ill brb in a bit yeah let me know through twitter? i yeah ok thx!!!!!!i brb tooo
+	
+	private boolean asteroidsOn, enemiesOn, BossOn;
+	private Timer asteroidSpawnTimer, enemySpawnTimer, bossSpawnTimer;
+	private float asteroidSpawnDelay, enemySpawnDelay, bossSpawnDelay;
 	
 	// Basically anything that inherited from Entity, can be put in here.
 	ArrayList<Entity> world;
 	
 	@Override
 	public void create () {
+		Sound backgroundSong = Gdx.audio.newSound(Gdx.files.local("VGM_01.mp3"));
 		world = new ArrayList<Entity>();
 		batch = new SpriteBatch();
-		
+		backgroundSong.play(1.0f);
 		// Spawn player.
 		player = new Player(new Vector2(0f, 0f), batch, world);
 		world.add(player);
 		
-		asteroidsOn = true;
-		enemiesOn = true;
+		asteroidsOn = false;
+		enemiesOn = false;
+		BossOn = true;
 		
 		setTimers();
 		
@@ -53,8 +59,10 @@ public class spacex extends ApplicationAdapter {
 		// Timers
 		asteroidSpawnTimer = new Timer();
 		enemySpawnTimer = new Timer();
+		bossSpawnTimer = new Timer();
 		asteroidSpawnDelay = 5f;
 		enemySpawnDelay = 10f;
+		bossSpawnDelay = 15f;
 		
 		if (asteroidsOn) { 
 			asteroidSpawnTimer.scheduleTask(new Task() {
@@ -80,8 +88,20 @@ public class spacex extends ApplicationAdapter {
 			}, 0f, enemySpawnDelay);
 		}
 		
+		if (BossOn) {
+			bossSpawnTimer.scheduleTask(new Task() {
+				@Override
+				public void run()
+				{
+					Boss boss = new Boss(randomTop(), batch, world);
+					world.add(boss);
+				}
+			}, 0f, bossSpawnDelay);
+		}
+		
 		asteroidSpawnTimer.start();
 		enemySpawnTimer.start();
+		bossSpawnTimer.start();
 	}
 
 	@Override

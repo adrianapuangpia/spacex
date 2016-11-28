@@ -6,9 +6,10 @@ package com.mygdx.spacex;
  */
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,6 +17,7 @@ public class Shot extends DynamicEntity {
 	
 	// 0: player shot, 1: enemy shot, .. etc.
 	protected int type;
+	Sound sound = Gdx.audio.newSound(Gdx.files.local("Shoot_00.mp3"));
 	
 	public Shot(Vector2 start, float rotation, int type, SpriteBatch batch, ArrayList<Entity> world)
 	{
@@ -70,11 +72,12 @@ public class Shot extends DynamicEntity {
 			// Check if any of the targets.
 			boolean isEnemy = e.getClass() == EnemyShip.class;
 			boolean isAsteroid = e.getClass() == Asteroid.class;
+			boolean isBoss = e.getClass() == Boss.class;
 			
 			// If it collides with this shot. (This first if, will filter out a lot of objects)
-			if (overlaps && (isEnemy || isAsteroid )) {
-				dispose();
-				e.dispose();
+			if (overlaps && (isEnemy || isAsteroid || isBoss )) {
+				kill();
+				e.damage(collisionDamage);
 			}
 			
 		});
@@ -82,9 +85,9 @@ public class Shot extends DynamicEntity {
 	
 	private void enemyShotCollision () {
 		if (bounds.overlaps(world.get(0).bounds)) {
-			dispose();
-			world.get(0).dispose();
+			kill();
+			world.get(0).damage(collisionDamage);
 		}
 	}
-	
+
 }
